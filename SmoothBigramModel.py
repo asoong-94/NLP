@@ -7,8 +7,8 @@ class SmoothBigramModel:
     self.total = 0
     # self.bigramCounts = collections.defaultdict(lambda: 1)
     self.bigramCounts = {}
-    self.corpus = corpus
-    self.train(self.corpus)
+    # self.corpus = corpus
+    self.train(corpus)
 
   def train(self, corpus):
     """ Takes a corpus and trains your language model. 
@@ -20,19 +20,22 @@ class SmoothBigramModel:
     #       for datum in sentence.data:  
     #         word = datum.word
     for sentence in corpus.corpus:
-        for i in range(0, len(sentence.data) -1):
+        for i in range(1, len(sentence.data)):
             # if word already in dictionary 
-            if sentence.data[i].word in self.bigramCounts:
-                if sentence.data[i+1].word in self.bigramCounts[sentence.data[i].word]:
-                    self.bigramCounts[sentence.data[i].word][sentence.data[i+1].word] += 1
+            curr = sentence.data[i].word
+            prev = sentence.data[i-1].word
+
+            if prev in self.bigramCounts:
+                if curr in self.bigramCounts[prev]:
+                    self.bigramCounts[prev][curr] += 1
                 else:
-                    self.bigramCounts[sentence.data[i].word][sentence.data[i+1].word] = 1
+                    self.bigramCounts[prev][curr] = 1
                     self.total += 1
             # if word not in dictionary yet
             else:
                 # create new nested dictionary, and initiate it to 1 cuz of smoothing
-                self.bigramCounts[sentence.data[i].word] = {}
-                self.bigramCounts[sentence.data[i].word][sentence.data[i+1].word] = 1
+                self.bigramCounts[prev] = {}
+                self.bigramCounts[prev][curr] = 1
                 self.total += 1
 
 
@@ -43,10 +46,12 @@ class SmoothBigramModel:
     # TODO your code here
     score = 0.0 
     for i in range(1, len(sentence) - 1):
-        print "sentence word: " + sentence[i]
         # if sentence[i] in self.bigramCounts:
-        count = (self.bigramCounts[sentence[i-1]][sentence[i]] * self.bigramCounts[sentence[i]]) / (self.bigramCounts[sentence[i-1]] + len(self.corpus))
-    
+        try:
+            count = self.bigramCounts[sentence[i-1]][sentence[i]] / (self.bigramCounts[sentence[i-1]] + len(self.corpus))
+        except:
+            count = 1
+
         if count > 0:
             score += math.log(count)
             score -= math.log(self.total)

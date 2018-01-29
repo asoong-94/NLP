@@ -108,7 +108,7 @@ def main():
   # smoothUnigramOutcome = smoothUnigramSpell.evaluate(devCorpus)
   # print str(smoothUnigramOutcome)
 
-  print 'Smooth Bigram Language Model: '
+  print "Smooth Bigram Language Model: "
   smoothBigramLM = SmoothBigramModel(trainingCorpus)
   smoothBigramSpell = SpellCorrect(smoothBigramLM, trainingCorpus)
   smoothBigramOutcome = smoothBigramSpell.evaluate(devCorpus)
