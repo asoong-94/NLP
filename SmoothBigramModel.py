@@ -25,6 +25,7 @@ class SmoothBigramModel:
     #         self.bigramCounts[sentence.data[i]] += 1
     #         self.bigramCounts[sentence.data[i-1].word + sentence.data[i].word] += 1
     #         self.total += 1
+    # https://rstudio-pubs-static.s3.amazonaws.com/115676_ab6bb49748c742b88127e8b5ce3e1298.html
     for sentence in corpus.corpus:
         for i in range(1, len(sentence.data)-1):
             if sentence.data[i] in self.bigramCounts:
