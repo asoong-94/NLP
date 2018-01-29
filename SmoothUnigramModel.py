@@ -14,11 +14,17 @@ class SmoothUnigramModel:
         Compute any counts or other corpus statistics in this function.
     """  
     # TODO your code here
+    # for sentence in corpus.corpus:
+    #     for datum in sentence.data:  
+    #         word = datum.word
+    #         self.unigramCounts[word] += 1
+    #         self.total += 1
+
     for sentence in corpus.corpus:
-        for datum in sentence.data:  
-            word = datum.word
-            self.unigramCounts[word] += 1
-            self.total += 1
+      for i in range(len(sentence.data)):
+        word = sentence.data[i].word
+        self.unigramCounts[word] += 1
+        self.total += 1
 
   def score(self, sentence):
     """ Takes a list of strings as argument and returns the log-probability of the 
