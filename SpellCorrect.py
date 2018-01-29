@@ -90,11 +90,11 @@ def main():
   devPath = 'data/tagged-dev.dat'
   devCorpus = Corpus(devPath)
 
-  print 'Unigram Language Model: ' 
-  unigramLM = UnigramModel(trainingCorpus)
-  unigramSpell = SpellCorrect(unigramLM, trainingCorpus)
-  unigramOutcome = unigramSpell.evaluate(devCorpus)
-  print str(unigramOutcome)
+  # print 'Unigram Language Model: ' 
+  # unigramLM = UnigramModel(trainingCorpus)
+  # unigramSpell = SpellCorrect(unigramLM, trainingCorpus)
+  # unigramOutcome = unigramSpell.evaluate(devCorpus)
+  # print str(unigramOutcome)
 
   # print 'Uniform Language Model: '
   # uniformLM = UniformModel(trainingCorpus)
@@ -108,11 +108,11 @@ def main():
   # smoothUnigramOutcome = smoothUnigramSpell.evaluate(devCorpus)
   # print str(smoothUnigramOutcome)
 
-  # print 'Smooth Bigram Language Model: '
-  # smoothBigramLM = SmoothBigramModel(trainingCorpus)
-  # smoothBigramSpell = SpellCorrect(smoothBigramLM, trainingCorpus)
-  # smoothBigramOutcome = smoothBigramSpell.evaluate(devCorpus)
-  # print str(smoothBigramOutcome)
+  print 'Smooth Bigram Language Model: '
+  smoothBigramLM = SmoothBigramModel(trainingCorpus)
+  smoothBigramSpell = SpellCorrect(smoothBigramLM, trainingCorpus)
+  smoothBigramOutcome = smoothBigramSpell.evaluate(devCorpus)
+  print str(smoothBigramOutcome)
 
   # print 'Backoff Language Model: '
   # backoffLM = BackoffModel(trainingCorpus)
