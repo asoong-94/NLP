@@ -90,23 +90,23 @@ def main():
   devPath = 'data/tagged-dev.dat'
   devCorpus = Corpus(devPath)
 
-  # print 'Unigram Language Model: ' 
-  # unigramLM = UnigramModel(trainingCorpus)
-  # unigramSpell = SpellCorrect(unigramLM, trainingCorpus)
-  # unigramOutcome = unigramSpell.evaluate(devCorpus)
-  # print str(unigramOutcome)
+  print 'Unigram Language Model: ' 
+  unigramLM = UnigramModel(trainingCorpus)
+  unigramSpell = SpellCorrect(unigramLM, trainingCorpus)
+  unigramOutcome = unigramSpell.evaluate(devCorpus)
+  print str(unigramOutcome)
 
-  # print 'Uniform Language Model: '
-  # uniformLM = UniformModel(trainingCorpus)
-  # uniformSpell = SpellCorrect(uniformLM, trainingCorpus)
-  # uniformOutcome = uniformSpell.evaluate(devCorpus) 
-  # print str(uniformOutcome)
+  print 'Uniform Language Model: '
+  uniformLM = UniformModel(trainingCorpus)
+  uniformSpell = SpellCorrect(uniformLM, trainingCorpus)
+  uniformOutcome = uniformSpell.evaluate(devCorpus) 
+  print str(uniformOutcome)
 
-  # print 'Smooth Unigram Language Model: ' 
-  # smoothUnigramLM = SmoothUnigramModel(trainingCorpus)
-  # smoothUnigramSpell = SpellCorrect(smoothUnigramLM, trainingCorpus)
-  # smoothUnigramOutcome = smoothUnigramSpell.evaluate(devCorpus)
-  # print str(smoothUnigramOutcome)
+  print 'Smooth Unigram Language Model: ' 
+  smoothUnigramLM = SmoothUnigramModel(trainingCorpus)
+  smoothUnigramSpell = SpellCorrect(smoothUnigramLM, trainingCorpus)
+  smoothUnigramOutcome = smoothUnigramSpell.evaluate(devCorpus)
+  print str(smoothUnigramOutcome)
 
   print "Smooth Bigram Language Model: "
   smoothBigramLM = SmoothBigramModel(trainingCorpus)
@@ -114,17 +114,17 @@ def main():
   smoothBigramOutcome = smoothBigramSpell.evaluate(devCorpus)
   print str(smoothBigramOutcome)
 
-  # print 'Backoff Language Model: '
-  # backoffLM = BackoffModel(trainingCorpus)
-  # backoffSpell = SpellCorrect(backoffLM, trainingCorpus)
-  # backoffOutcome = backoffSpell.evaluate(devCorpus)
-  # print str(backoffOutcome)
+  print 'Backoff Language Model: '
+  backoffLM = BackoffModel(trainingCorpus)
+  backoffSpell = SpellCorrect(backoffLM, trainingCorpus)
+  backoffOutcome = backoffSpell.evaluate(devCorpus)
+  print str(backoffOutcome)
 
-  # print 'Custom Language Model: '
-  # customLM = CustomModel(trainingCorpus)
-  # customSpell = SpellCorrect(customLM, trainingCorpus)
-  # customOutcome = customSpell.evaluate(devCorpus)
-  # print str(customOutcome)
+  print 'Custom Language Model: '
+  customLM = CustomModel(trainingCorpus)
+  customSpell = SpellCorrect(customLM, trainingCorpus)
+  customOutcome = customSpell.evaluate(devCorpus)
+  print str(customOutcome)
 
 if __name__ == "__main__":
     main()

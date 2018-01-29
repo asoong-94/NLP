@@ -19,7 +19,6 @@ class SmoothUnigramModel:
     #         word = datum.word
     #         self.unigramCounts[word] += 1
     #         self.total += 1
-
     for sentence in corpus.corpus:
       for i in range(len(sentence.data)):
         word = sentence.data[i].word
