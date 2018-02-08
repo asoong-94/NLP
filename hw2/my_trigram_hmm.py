@@ -34,10 +34,16 @@ with open(TAG_FILE) as tagFile, open(TOKEN_FILE) as tokenFile:
 				vocab[token] = 1
 				vocab = OOV_WORD
 
-			if tag not in emissions:
-				emissions[tag] = defaultdict(lambda : defaultdict(int))
-			if prevtag not in transitions:
-				transitions[prevtag] = defaultdict(lambda : defaultdict(int))
+			if prevtag not in emissions:
+				emissions[prevtag] = defaultdict()
+			if tag not in emissions[prevtag]:
+				emissions[prevtag][tag] = defaultdict(int)
+				
+			if prev2tag not in transitions:
+				transitions[prev2tag] = defaultdict()
+			if prevtag not in transitions[prev2tag]:
+				transitions[prev2tag][prev2tag] = defaultdict(int)
+
 
 			emissions[prevtag][tag][token] += 1
 			emissionsTotal[prevtag][tag] += 1
