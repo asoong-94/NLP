@@ -29,7 +29,6 @@ with open(TAG_FILE) as tagFile, open(TOKEN_FILE) as tokenFile:
 		prev2tag=INIT_STATE
 
 		for (tag, token) in pairs:
-			print "tag: %s, token: %s" % (tag, token)
 			if token not in vocab:
 				vocab[token] = 1
 				token = OOV_WORD
@@ -60,18 +59,18 @@ with open(TAG_FILE) as tagFile, open(TOKEN_FILE) as tokenFile:
 			transitions[prev2tag][prevtag] = defaultdict(int)
 
 		transitions[prev2tag][prevtag][FINAL_STATE] += 1
-		transitionsTotal[prev2tag][prev2tag] += 1
+		transitionsTotal[prev2tag][prevtag] += 1
 
 
 for prev2tag in transitions:
 	for prevtag in transitions[prev2tag]:
 		for tag in transitions[prev2tag][prevtag]:
-			print "trans %s %s %s %d" % (prev2tag, prevtag, tag, float(transitions[prev2tag][prevtag][tag]) / transitions[prev2tag][prevtag])
+			print "trans %s %s %s %d" % (prev2tag, prevtag, tag, float(transitions[prev2tag][prevtag][tag]) / transitionsTotal[prev2tag][prevtag])
 
-for prevtag in transitions:
-	for tag in transitions[prevtag]:
-		for token in transitions[prevtag][tag]:
-			print "trans %s %s %s %d" % (prevtag, tag, token, float(transitions[prevtag][tag][token]) / transitions[prevtag][tag])
+for prevtag in emissions:
+	for tag in emissions[prevtag]:
+		for token in emissions[prevtag][tag]:
+			print "trans %s %s %s %d" % (prevtag, tag, token, float(emissions[prevtag][tag][token]) / emissionsTotal[prevtag][tag])
 
 
 
