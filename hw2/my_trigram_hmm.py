@@ -58,12 +58,12 @@ with open(TAG_FILE) as tagFile, open(TOKEN_FILE) as tokenFile:
 for prev2tag in transitions:
 	for prevtag in transitions[prev2tag]:
 		for tag in transitions[prev2tag][prevtag]:
-			print "trans %s %s %s %s" % (prev2tag, prevtag, tag, float(transitions[prev2tag][prevtag][tag]) / transitions[prev2tag][prevtag])
+			print "trans %s %s %s %d" % (prev2tag, prevtag, tag, float(transitions[prev2tag][prevtag][tag]) / transitions[prev2tag][prevtag])
 
 for prevtag in transitions:
 	for tag in transitions[prevtag]:
 		for token in transitions[prevtag][tag]:
-			print "trans %s %s %s %s" % (prevtag, tag, token, float(transitions[prevtag][tag][token]) / transitions[prevtag][tag])
+			print "trans %s %s %s %d" % (prevtag, tag, token, float(transitions[prevtag][tag][token]) / transitions[prevtag][tag])
 
 
 
