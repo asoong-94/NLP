@@ -29,20 +29,20 @@ with open(TAG_FILE) as tagFile, open(TOKEN_FILE) as tokenFile:
 		prev2tag=INIT_STATE
 
 		for (tag, token) in pairs:
-
+			print "tag: %s, token: %s" % (tag, token)
 			if token not in vocab:
 				vocab[token] = 1
-				vocab = OOV_WORD
+				token = OOV_WORD
 
 			if prevtag not in emissions:
 				emissions[prevtag] = defaultdict()
 			if tag not in emissions[prevtag]:
 				emissions[prevtag][tag] = defaultdict(int)
-				
+
 			if prev2tag not in transitions:
 				transitions[prev2tag] = defaultdict()
 			if prevtag not in transitions[prev2tag]:
-				transitions[prev2tag][prev2tag] = defaultdict(int)
+				transitions[prev2tag][prevtag] = defaultdict(int)
 
 
 			emissions[prevtag][tag][token] += 1
@@ -55,7 +55,9 @@ with open(TAG_FILE) as tagFile, open(TOKEN_FILE) as tokenFile:
 			prevtag = tag
 
 		if prev2tag not in transitions:
-			transitions[prev2tag] = defaultdict(lambda : defaultdict(int))
+			transitions[prev2tag] = defaultdict()
+		if prevtag not in transitions[prev2tag]:
+			transitions[prev2tag][prevtag] = defaultdict(int)
 
 		transitions[prev2tag][prevtag][FINAL_STATE] += 1
 		transitionsTotal[prev2tag][prev2tag] += 1
