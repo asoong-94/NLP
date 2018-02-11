@@ -23,7 +23,7 @@ INIT_STATE = 'init'
 FINAL_STATE = 'final'
 OOV_SYMBOL = 'OOV'
 
-hmmfile = 'my.hmm'
+hmmfile = 'myTrigram.hmm'
 inputfile = 'ptb.22.txt'
 
 tags = set() # i.e. K in the slides, a set of unique POS tags
@@ -41,6 +41,7 @@ with open(hmmfile) as hmmfile:
         trans_match = re.match(trans_reg, line)
         emit_match = re.match(emit_reg, line)
         if trans_match:
+            # print "found trans match"
             qqq, qq, q, p = trans_match.groups()
             # creating an entry in trans with the POS tag pair
             # e.g. (init, NNP) = log(probability for seeing that transition)
@@ -48,6 +49,7 @@ with open(hmmfile) as hmmfile:
             # add the encountered POS tags to set
             tags.update([qqq, qq, q])
         elif emit_match:
+            # print "found emit match"
             qq, q, w, p = emit_match.groups()
             # creating an entry in emit with the tag and word pair
             # e.g. (NNP, "python") = log(probability for seeing that word with that tag)
@@ -77,25 +79,25 @@ with open(inputfile) as inputfile:
             if word not in voc:
                 # change unseen words into OOV, since OOV is assigned a score in train_hmm. This will give these unseen words a score instead of a mismatch.
                 word = OOV_SYMBOL
-            for u, v in itertools.product(tags, tags): #python nested for loop
+            for w, u, v in itertools.product(tags, tags, tags): #python nested for loop
                 # i.e. the first bullet point from the slides.
                 # Calculate the scores (p) for each possible combinations of (u, v)
-                if (v, u) in trans and (u, word) in emit and (k - 1, v) in pi:
-                    p = pi[(k - 1, v)] + trans[(v, u)] + emit[(u, word)]
+                if (w, v, u) in trans and (v, u, word) in emit and (k - 2, k - 1, v) in pi:
+                    p = pi[(k - 2, k - 1, v)] + trans[(w, v, u)] + emit[(v, u, word)]
                     if (k, u) not in pi or p > pi[(k, u)]:
                         # here, fine the max of all the calculated p, update it in the pi dictionary
-                        pi[(k, u)] = p
+                        pi[(k, v, u)] = p
                         # also keeping track of the backpointer
-                        bp[(k, u)] = v
+                        bp[(k, v, u)] = v
 
         # second bullet point from the slides. Taking the case for the last word. Find the corrsponding POS tag for that word so we can then start the backtracing.
         foundgoal = False
         goal = float('-inf')
         tag = INIT_STATE
-        for v in tags:
+        for u, v in itertools.product(tags, tags):
             # You want to try each (tag, FINAL_STATE) pair for the last word and find which one has max p. That will be the tag you choose.
-            if (v, FINAL_STATE) in trans and (len(line), v) in pi:
-                p = pi[(len(line), v)] + trans[(v, FINAL_STATE)]
+            if (u, v, FINAL_STATE) in trans and (len(line), u, v) in pi:
+                p = pi[(len(line), u, v)] + trans[(u, v, FINAL_STATE)]
                 if not foundgoal or p > goal:
                     # finding tag with max p
                     goal = p
@@ -118,3 +120,5 @@ with open(inputfile) as inputfile:
         else:
             # append blank line if something fails so that each sentence is still printed on the correct line.
             print '\n'
+
+
