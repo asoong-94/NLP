@@ -58,10 +58,6 @@ class EditModel(object):
 
   def insertEdits(self, word):
     """Returns a list of edits of 1-insert distance words and rules used to generate them."""
-    # TODO: write this
-    # Tip: you might find EditModel.ALPHABET helpful
-    # Tip: If inserting the letter 'a' as the second character in the word 'test', the corrupt
-    #      signal is 't' and the correct signal is 'ta'. See slide 17 of the noisy channel model.
     if len(word) <= 0:
       return []
 
@@ -74,7 +70,7 @@ class EditModel(object):
         correctLetters = corruptLetters[i-1:i+1]
 
         #The corrected word deletes character i (and lacks the start symbol)
-        correction = "%s%s%s" % (word[1:i], self.ALPHABET[j], word[i:])
+        correction = "".join([word[1:i], self.ALPHABET[j], word[i:]])
         correctLetters = word[i-1:i] + self.ALPHABET[j] 
         corruptLetters = word[i-1]
         ret.append(Edit(correction, corruptLetters, correctLetters))
@@ -83,9 +79,6 @@ class EditModel(object):
 
   def transposeEdits(self, word):
     """Returns a list of edits of 1-transpose distance words and rules used to generate them."""
-    # TODO: write this
-    # Tip: If tranposing letters 'te' in the word 'test', the corrupt signal is 'te'
-    #      and the correct signal is 'et'. See slide 17 of the noisy channel model.
     if len(word) <= 0:
       return []
 
@@ -96,17 +89,13 @@ class EditModel(object):
       correctLetters = corruptLetters[::-1]
 
       #The corrected word deletes character i (and lacks the start symbol)
-      correction = "%s%s%s" % (word[:i-1], correctLetters, word[i+1:])
+      correction = "".join([word[:i-1], correctLetters, word[i+1:]])
       ret.append(Edit(correction, corruptLetters, correctLetters))
 
     return ret
 
   def replaceEdits(self, word):
     """Returns a list of edits of 1-replace distance words and rules used to generate them."""
-    # TODO: write this
-    # Tip: you might find EditModel.ALPHABET helpful
-    # Tip: If replacing the letter 'e' with 'q' in the word 'test', the corrupt signal is 'e'
-    #      and the correct signal is 'q'. See slide 17 of the noisy channel model.
     if len(word) <= 0:
       return []
 
@@ -119,7 +108,7 @@ class EditModel(object):
 
         if corruptLetters is not correctLetters:
           #The corrected word deletes character i (and lacks the start symbol)
-          correction = "%s%s%s" % (word[:i-1], correctLetters, word[i:])
+          correction = "".join([word[:i-1], correctLetters, word[i:]])
           ret.append(Edit(correction, corruptLetters, correctLetters))
 
     return ret
@@ -134,8 +123,7 @@ class EditModel(object):
 
   def editProbabilities(self, misspelling):
     """Computes in-vocabulary edits and edit-probabilities for a given misspelling.
-       Returns list of (correction, log(p(mispelling|correction))) pairs."""
-
+    Returns list of (correction, log(p(mispelling|correction))) pairs."""
     wordCounts = collections.defaultdict(int)
     wordTotal  = 0
     for edit in self.edits(misspelling):
