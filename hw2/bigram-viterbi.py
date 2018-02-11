@@ -48,14 +48,14 @@ with open(hmmfile) as hmmfile:
             # add the encountered POS tags to set
             tags.update([qq, q])
         elif emit_match:
-            qq, q, w, p = emit_match.groups()
+            q, w, p = emit_match.groups()
             # creating an entry in emit with the tag and word pair
             # e.g. (NNP, "python") = log(probability for seeing that word with that tag)
-            emit[(qq, q, w)] = math.log(float(p))
+            emit[(q, w)] = math.log(float(p))
             # adding the word to encountered words
             voc[w] = 1
             # add the encountered POS tags to set
-            tags.update([qq, q])
+            tags.update([q])
         else:
             #print 'no'
             pass

@@ -48,14 +48,14 @@ with open(hmmfile) as hmmfile:
             # add the encountered POS tags to set
             tags.update([qqq, qq, q])
         elif emit_match:
-            q, w, p = emit_match.groups()
+            qq, q, w, p = emit_match.groups()
             # creating an entry in emit with the tag and word pair
             # e.g. (NNP, "python") = log(probability for seeing that word with that tag)
-            emit[(q, w)] = math.log(float(p))
+            emit[(qq, q, w)] = math.log(float(p))
             # adding the word to encountered words
             voc[w] = 1
             # add the encountered POS tags to set
-            tags.update([q])
+            tags.update([qq, q])
         else:
             #print 'no'
             pass
@@ -68,7 +68,7 @@ with open(inputfile) as inputfile:
         line = line.split(' ')
         # initialize pi.
         # i.e. set pi(0, *, *) = 1 from slides
-        pi = {(0, INIT_STATE): 0.0} # 0.0 because using logs
+        pi = {(0, INIT_STATE, INIT_STATE): 0.0} # 0.0 because using logs
         bp = {} # backpointers
 
         # for each word in sentence and their index
