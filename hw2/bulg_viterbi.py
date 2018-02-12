@@ -23,8 +23,8 @@ INIT_STATE = 'init'
 FINAL_STATE = 'final'
 OOV_SYMBOL = 'OOV'
 
-hmmfile = 'myTrigram.hmm'
-inputfile = 'ptb.23.txt'
+hmmfile = 'mybulg.hmm'
+inputfile = 'btb.test.txt'
 
 tags = set() # i.e. K in the slides, a set of unique POS tags
 tags2 = set()

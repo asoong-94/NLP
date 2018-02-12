@@ -23,8 +23,8 @@ INIT_STATE = 'init'
 FINAL_STATE = 'final'
 OOV_SYMBOL = 'OOV'
 
-hmmfile = 'myTrigram.hmm'
-inputfile = 'ptb.23.txt'
+hmmfile = 'myjapanese.hmm'
+inputfile = 'jv.test.txt'
 
 tags = set() # i.e. K in the slides, a set of unique POS tags
 tags2 = set()
@@ -63,15 +63,6 @@ with open(hmmfile) as hmmfile:
             #print 'no'
             pass
 
-# with open(inputfile) as inputfile:
-#     for line in inputfile.read().splitlines():
-#         line = line.split(' ')
-#         for word in line:
-
-#             for u, v, w in itertools.product(tags, tags, tags): #python nested for loop
-#                 if ((v, u), word) in emit:
-#                     print ((v, u), word)
-
 
 """
 This part parses the file with the test sentences, and runs the sentence through the viterbi algorithm.
@@ -108,8 +99,8 @@ with open(inputfile) as inputfile:
         tag = INIT_STATE
         for u, v in itertools.product(tags, tags):
             # You want to try each (tag, FINAL_STATE) pair for the last word and find which one has max p. That will be the tag you choose.
-            if ((v, u), FINAL_STATE) in trans and (len(line), v, u) in pi:
-                p = pi[(len(line), v, u)] + trans[((v, u), FINAL_STATE)]
+            if ((v, u), FINAL_STATE) in trans and (len(line)-1, v, u) in pi:
+                p = pi[(len(line)-1, v, u)] + trans[((v, u), FINAL_STATE)]
                 if not foundgoal or p > goal:
                     # finding tag with max p
                     goal = p
@@ -123,7 +114,7 @@ with open(inputfile) as inputfile:
             y = ['.']
             u, v = tag
 
-            for i in xrange(len(line), 2, -1): #counting from the last word
+            for i in xrange(len(line)-1, 2, -1): #counting from the last word
                 # bp[(i, tag)] gives you the tag for word[i - 1].
                 # we use that and traces through the tags in the sentence.
                 v, u = bp[(i, v, u)]

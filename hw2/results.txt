@@ -1,0 +1,7 @@
+Alexanders-MacBook-Pro:hw2 asoong$ ./tag_acc.pl btb.test.tgs mybulg.out
+error rate by word:      1 (5934 errors out of 5934)
+error rate by sentence:  1 (398 errors out of 398)
+
+Alexanders-MacBook-Pro:hw2 asoong$ ./tag_acc.pl jv.test.tgs myjap.out
+error rate by word:      1 (5711 errors out of 5711)
+error rate by sentence:  1 (709 errors out of 709)
