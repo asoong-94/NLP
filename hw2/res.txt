@@ -1,0 +1,3 @@
+trans init IN 1.0
+trans IN final 1.0
+emit IN OOV 1.0 

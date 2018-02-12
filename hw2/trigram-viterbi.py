@@ -1,4 +1,4 @@
-# Noah A. Smith
+# Noah A. Smithx
 # 2/21/08
 # Runs the Viterbi algorithm (no tricks other than logmath!), given an
 # HMM, on sentences, and outputs the best state path.
@@ -99,37 +99,37 @@ with open(inputfile) as inputfile:
                         # here, fine the max of all the calculated p, update it in the pi dictionary
                         pi[(k, v, u)] = p
                         # also keeping track of the backpointer
-                        bp[(k, v, u)] = w
+                        bp[(k, v, u)] = (w,v)
 
 
         # second bullet point from the slides. Taking the case for the last word. Find the corrsponding POS tag for that word so we can then start the backtracing.
         foundgoal = False
         goal = float('-inf')
         tag = INIT_STATE
-        prevtag = INIT_STATE
         for u, v in itertools.product(tags, tags):
             # You want to try each (tag, FINAL_STATE) pair for the last word and find which one has max p. That will be the tag you choose.
             if ((v, u), FINAL_STATE) in trans and (len(line), v, u) in pi:
-                print "fOuNd " + str((v, u))
                 p = pi[(len(line), v, u)] + trans[((v, u), FINAL_STATE)]
                 if not foundgoal or p > goal:
                     # finding tag with max p
                     goal = p
                     foundgoal = True
-                    tag = u
-                    prevtag = v
-
+                    tag = (u,v)
+                    # tag = u
+                    # prevtag = v
 
         if foundgoal:
             # y is the sequence of final chosen tags
-            y = []
-            for i in xrange(len(line), 1, -1): #counting from the last word
+            y = ['.']
+            u, v = tag
+
+            for i in xrange(len(line), 2, -1): #counting from the last word
                 # bp[(i, tag)] gives you the tag for word[i - 1].
                 # we use that and traces through the tags in the sentence.
-                y.append(bp[(i, prevtag, tag)])
-                tag = bp[(i, prevtag, tag)]
-
-
+                v, u = bp[(i, v, u)]
+                y.append(v)
+                # tag = prevtag
+                # prevtag = bp[(i, prevtag, tag)]
 
             # y is appened last tag first. Reverse it.
             y.reverse()
