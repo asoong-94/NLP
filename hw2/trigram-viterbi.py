@@ -54,11 +54,11 @@ with open(hmmfile) as hmmfile:
             qq, q, w, p = emit_match.groups()
             # creating an entry in emit with the tag and word pair
             # e.g. (NNP, "python") = log(probability for seeing that word with that tag)
-            emit[(qq, q), w] = math.log(float(p))
+            emit[(q, w)] = math.log(float(p))
             # adding the word to encountered words
             voc[w] = 1
             # add the encountered POS tags to set
-            tags.update([qq, q])
+            tags.update([q])
         else:
             #print 'no'
             pass
@@ -73,9 +73,9 @@ with open(hmmfile) as hmmfile:
 #                     print ((v, u), word)
 
 
-# """
-# This part parses the file with the test sentences, and runs the sentence through the viterbi algorithm.
-# """
+"""
+This part parses the file with the test sentences, and runs the sentence through the viterbi algorithm.
+"""
 with open(inputfile) as inputfile:
     for line in inputfile.read().splitlines():
         line = line.split(' ')
@@ -93,8 +93,8 @@ with open(inputfile) as inputfile:
             for u, v, w in itertools.product(tags, tags, tags): #python nested for loop
                 # i.e. the first bullet point from the slides.
                 # Calculate the scores (p) for each possible combinations of (u, v)
-                if ((w, v), u) in trans and ((v, u), word) in emit and (k - 1, w, v) in pi:
-                    p = pi[(k - 1, w, v)] + trans[((w, v), u)] + emit[((v, u), word)]
+                if ((w, v), u) in trans and (u, word) in emit and (k - 1, w, v) in pi:
+                    p = pi[(k - 1, w, v)] + trans[((w, v), u)] + emit[(u, word)]
                     if (k, v, u) not in pi or p > pi[(k, v, u)]:
                         # here, fine the max of all the calculated p, update it in the pi dictionary
                         pi[(k, v, u)] = p
@@ -106,10 +106,11 @@ with open(inputfile) as inputfile:
         foundgoal = False
         goal = float('-inf')
         tag = INIT_STATE
+        prevtag = INIT_STATE
         for u, v in itertools.product(tags, tags):
             # You want to try each (tag, FINAL_STATE) pair for the last word and find which one has max p. That will be the tag you choose.
-            if ((v, u), FINAL_STATE) in trans and (len(line)-1, v, u) in pi:
-                print "found " + str(((v, u), FINAL_STATE))
+            if ((v, u), FINAL_STATE) in trans and (len(line), v, u) in pi:
+                print "fOuNd " + str((v, u))
                 p = pi[(len(line), v, u)] + trans[((v, u), FINAL_STATE)]
                 if not foundgoal or p > goal:
                     # finding tag with max p
@@ -118,15 +119,16 @@ with open(inputfile) as inputfile:
                     tag = u
                     prevtag = v
 
+
         if foundgoal:
             # y is the sequence of final chosen tags
-            print "in foundGoal"
             y = []
             for i in xrange(len(line), 1, -1): #counting from the last word
                 # bp[(i, tag)] gives you the tag for word[i - 1].
                 # we use that and traces through the tags in the sentence.
                 y.append(bp[(i, prevtag, tag)])
                 tag = bp[(i, prevtag, tag)]
+
 
 
             # y is appened last tag first. Reverse it.
