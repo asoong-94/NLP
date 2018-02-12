@@ -88,6 +88,8 @@ with open(inputfile) as inputfile:
                         # also keeping track of the backpointer
                         bp[(k, u)] = v
 
+            
+
         # second bullet point from the slides. Taking the case for the last word. Find the corrsponding POS tag for that word so we can then start the backtracing.
         foundgoal = False
         goal = float('-inf')

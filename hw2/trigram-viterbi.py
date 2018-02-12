@@ -27,6 +27,7 @@ hmmfile = 'myTrigram.hmm'
 inputfile = 'ptb.22.txt'
 
 tags = set() # i.e. K in the slides, a set of unique POS tags
+tags2 = set()
 trans = {} # transisions
 emit = {} # emissions
 voc = {} # encountered words
@@ -45,7 +46,7 @@ with open(hmmfile) as hmmfile:
             qqq, qq, q, p = trans_match.groups()
             # creating an entry in trans with the POS tag pair
             # e.g. (init, NNP) = log(probability for seeing that transition)
-            trans[(qqq, qq, q)] = math.log(float(p))
+            trans[(qqq, qq), q] = math.log(float(p))
             # add the encountered POS tags to set
             tags.update([qqq, qq, q])
         elif emit_match:
@@ -53,7 +54,7 @@ with open(hmmfile) as hmmfile:
             qq, q, w, p = emit_match.groups()
             # creating an entry in emit with the tag and word pair
             # e.g. (NNP, "python") = log(probability for seeing that word with that tag)
-            emit[(qq, q, w)] = math.log(float(p))
+            emit[(qq, q), w] = math.log(float(p))
             # adding the word to encountered words
             voc[w] = 1
             # add the encountered POS tags to set
@@ -62,9 +63,19 @@ with open(hmmfile) as hmmfile:
             #print 'no'
             pass
 
-"""
-This part parses the file with the test sentences, and runs the sentence through the viterbi algorithm.
-"""
+# with open(inputfile) as inputfile:
+#     for line in inputfile.read().splitlines():
+#         line = line.split(' ')
+#         for word in line:
+
+#             for u, v, w in itertools.product(tags, tags, tags): #python nested for loop
+#                 if ((v, u), word) in emit:
+#                     print ((v, u), word)
+
+
+# """
+# This part parses the file with the test sentences, and runs the sentence through the viterbi algorithm.
+# """
 with open(inputfile) as inputfile:
     for line in inputfile.read().splitlines():
         line = line.split(' ')
@@ -79,25 +90,26 @@ with open(inputfile) as inputfile:
             if word not in voc:
                 # change unseen words into OOV, since OOV is assigned a score in train_hmm. This will give these unseen words a score instead of a mismatch.
                 word = OOV_SYMBOL
-            for w, u, v in itertools.product(tags, tags, tags): #python nested for loop
+            for u, v, w in itertools.product(tags, tags, tags): #python nested for loop
                 # i.e. the first bullet point from the slides.
                 # Calculate the scores (p) for each possible combinations of (u, v)
-                if (w, v, u) in trans and (v, u, word) in emit and (k - 2, k - 1, v) in pi:
-                    p = pi[(k - 2, k - 1, v)] + trans[(w, v, u)] + emit[(v, u, word)]
-                    if (k, u) not in pi or p > pi[(k, u)]:
+                if ((w, v), u) in trans and ((v, u), word) in emit and (k - 1, w, v) in pi:
+                    p = pi[(k - 1, w, v)] + trans[((w, v), u)] + emit[((v, u), word)]
+                    if (k, v, u) not in pi or p > pi[(k, v, u)]:
                         # here, fine the max of all the calculated p, update it in the pi dictionary
                         pi[(k, v, u)] = p
                         # also keeping track of the backpointer
                         bp[(k, v, u)] = v
 
+
         # second bullet point from the slides. Taking the case for the last word. Find the corrsponding POS tag for that word so we can then start the backtracing.
         foundgoal = False
         goal = float('-inf')
         tag = INIT_STATE
-        for u, v in itertools.product(tags, tags):
+        for v in tags:
             # You want to try each (tag, FINAL_STATE) pair for the last word and find which one has max p. That will be the tag you choose.
-            if (u, v, FINAL_STATE) in trans and (len(line), u, v) in pi:
-                p = pi[(len(line), u, v)] + trans[(u, v, FINAL_STATE)]
+            if (v, FINAL_STATE) in trans and (len(line), v) in pi:
+                p = pi[(len(line), v)] + trans[(v, FINAL_STATE)]
                 if not foundgoal or p > goal:
                     # finding tag with max p
                     goal = p
@@ -119,6 +131,6 @@ with open(inputfile) as inputfile:
             print ' '.join(y)
         else:
             # append blank line if something fails so that each sentence is still printed on the correct line.
-            print '\n'
+            print ''
 
 
