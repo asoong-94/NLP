@@ -24,10 +24,9 @@ FINAL_STATE = 'final'
 OOV_SYMBOL = 'OOV'
 
 hmmfile = 'myTrigram.hmm'
-inputfile = 'ptb.23.txt'
+inputfile = 'ptb.22.txt'
 
 tags = set() # i.e. K in the slides, a set of unique POS tags
-tags2 = set()
 trans = {} # transisions
 emit = {} # emissions
 voc = {} # encountered words
@@ -38,7 +37,7 @@ This part parses the my.hmm file you have generated and obtain the transition an
 with open(hmmfile) as hmmfile:
     for line in hmmfile.read().splitlines():
         trans_reg = 'trans\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)'
-        emit_reg = 'emit\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)'
+        emit_reg = 'emit\s+(\S+)\s+(\S+)\s+(\S+)'
         trans_match = re.match(trans_reg, line)
         emit_match = re.match(emit_reg, line)
         if trans_match:
@@ -51,7 +50,7 @@ with open(hmmfile) as hmmfile:
             tags.update([qqq, qq, q])
         elif emit_match:
             # print "found emit match"
-            qq, q, w, p = emit_match.groups()
+            q, w, p = emit_match.groups()
             # creating an entry in emit with the tag and word pair
             # e.g. (NNP, "python") = log(probability for seeing that word with that tag)
             emit[(q, w)] = math.log(float(p))
@@ -62,7 +61,6 @@ with open(hmmfile) as hmmfile:
         else:
             #print 'no'
             pass
-
 # with open(inputfile) as inputfile:
 #     for line in inputfile.read().splitlines():
 #         line = line.split(' ')

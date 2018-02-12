@@ -79,7 +79,7 @@ for prev2tag in transitions:
 # 			print "emit %s %s %s %s" % (prevtag, tag, token, float(emissions[prevtag][tag][token]) / emissionsTotal[prevtag][tag])
 for tag in emissions:
 	for token in emissions[tag]:
-		print "emit %s %s %s " % (tag, token, float(emissions[tag][token]) / emissionsTotal[tag])
+		print "emit %s %s %s" % (tag, token, float(emissions[tag][token]) / emissionsTotal[tag])
 
 
 
