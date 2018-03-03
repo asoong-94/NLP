@@ -36,19 +36,12 @@ with open(TAG_FILE) as tagFile, open(TOKEN_FILE) as tokenFile:
 
 			if tag not in emissions:
 				emissions[tag]=defaultdict(int)				
-			# if prevtag not in emissions:
-			# 	emissions[prevtag] = defaultdict()
-			# if tag not in emissions[prevtag]:
-			# 	emissions[prevtag][tag] = defaultdict(int)
 
+			#dict of dict that keeps a counter 
 			if prev2tag not in transitions:
 				transitions[prev2tag] = defaultdict()
 			if prevtag not in transitions[prev2tag]:
 				transitions[prev2tag][prevtag] = defaultdict(int)
-
-
-			# emissions[prevtag][tag][token] += 1
-			# emissionsTotal[prevtag][tag] += 1
 
 			emissions[tag][token]+=1
 			emissionsTotal[tag]+=1
@@ -73,10 +66,6 @@ for prev2tag in transitions:
 		for tag in transitions[prev2tag][prevtag]:
 			print "trans %s %s %s %s" % (prev2tag, prevtag, tag, float(transitions[prev2tag][prevtag][tag]) / transitionsTotal[prev2tag][prevtag])
 
-# for prevtag in emissions:
-# 	for tag in emissions[prevtag]:
-# 		for token in emissions[prevtag][tag]:
-# 			print "emit %s %s %s %s" % (prevtag, tag, token, float(emissions[prevtag][tag][token]) / emissionsTotal[prevtag][tag])
 for tag in emissions:
 	for token in emissions[tag]:
 		print "emit %s %s %s" % (tag, token, float(emissions[tag][token]) / emissionsTotal[tag])

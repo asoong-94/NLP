@@ -27,7 +27,6 @@ hmmfile = 'myjapanese.hmm'
 inputfile = 'jv.test.txt'
 
 tags = set() # i.e. K in the slides, a set of unique POS tags
-tags2 = set()
 trans = {} # transisions
 emit = {} # emissions
 voc = {} # encountered words
@@ -84,6 +83,7 @@ with open(inputfile) as inputfile:
             for u, v, w in itertools.product(tags, tags, tags): #python nested for loop
                 # i.e. the first bullet point from the slides.
                 # Calculate the scores (p) for each possible combinations of (u, v)
+                # find the tuple of prev2 and prev tags
                 if ((w, v), u) in trans and (u, word) in emit and (k - 1, w, v) in pi:
                     p = pi[(k - 1, w, v)] + trans[((w, v), u)] + emit[(u, word)]
                     if (k, v, u) not in pi or p > pi[(k, v, u)]:
@@ -117,17 +117,16 @@ with open(inputfile) as inputfile:
             for i in xrange(len(line)-1, 2, -1): #counting from the last word
                 # bp[(i, tag)] gives you the tag for word[i - 1].
                 # we use that and traces through the tags in the sentence.
+
+                # update prev and prev2 tags
                 v, u = bp[(i, v, u)]
                 y.append(v)
-                # tag = prevtag
-                # prevtag = bp[(i, prevtag, tag)]
 
             # y is appened last tag first. Reverse it.
             y.reverse()
             # print the final output
             print ' '.join(y)
         else:
-            # append blank line if something fails so that each sentence is still printed on the correct line.
             print ''
 
 

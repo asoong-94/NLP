@@ -24,7 +24,7 @@ FINAL_STATE = 'final'
 OOV_SYMBOL = 'OOV'
 
 hmmfile = 'myTrigram.hmm'
-inputfile = 'ptb.22.txt'
+inputfile = 'ptb.23.txt'
 
 tags = set() # i.e. K in the slides, a set of unique POS tags
 trans = {} # transisions
@@ -42,6 +42,7 @@ with open(hmmfile) as hmmfile:
         emit_match = re.match(emit_reg, line)
         if trans_match:
             # print "found trans match"
+            # keep track of prev2 prev and curr tags
             qqq, qq, q, p = trans_match.groups()
             # creating an entry in trans with the POS tag pair
             # e.g. (init, NNP) = log(probability for seeing that transition)
@@ -91,6 +92,7 @@ with open(inputfile) as inputfile:
             for u, v, w in itertools.product(tags, tags, tags): #python nested for loop
                 # i.e. the first bullet point from the slides.
                 # Calculate the scores (p) for each possible combinations of (u, v)
+                # find the tuple of (prev2, prev) tags in trans
                 if ((w, v), u) in trans and (u, word) in emit and (k - 1, w, v) in pi:
                     p = pi[(k - 1, w, v)] + trans[((w, v), u)] + emit[(u, word)]
                     if (k, v, u) not in pi or p > pi[(k, v, u)]:
@@ -121,13 +123,13 @@ with open(inputfile) as inputfile:
             y = ['.']
             u, v = tag
 
+            # loop ends at index 2 to avoid printing out INIT_STATE
             for i in xrange(len(line), 2, -1): #counting from the last word
                 # bp[(i, tag)] gives you the tag for word[i - 1].
                 # we use that and traces through the tags in the sentence.
+                # update prev and prev2 tags
                 v, u = bp[(i, v, u)]
                 y.append(v)
-                # tag = prevtag
-                # prevtag = bp[(i, prevtag, tag)]
 
             # y is appened last tag first. Reverse it.
             y.reverse()
