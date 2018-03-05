@@ -1,11 +1,11 @@
-ROOT -> S2 1
-S2 ->  1
-S2 -> +Det 1
-S2 -> +Misc 1
-S2 -> +Noun 1
-S2 -> +Prep 1
-S2 -> +Proper 1
-S2 -> +VerbT 1
+ROOT -> S1 1
+S1 ->  1
+S1 -> +Det 1
+S1 -> +Misc 1
+S1 -> +Noun 1
+S1 -> +Prep 1
+S1 -> +Proper 1
+S1 -> +VerbT 1
 +Det -> Det 1
 +Det -> Det +Det 1
 +Det -> Det +Misc 1

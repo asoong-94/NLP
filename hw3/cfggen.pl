@@ -17,7 +17,7 @@
 
 $ROOT_symbol = "ROOT";
 
-$PRETTYPRINT = 0;
+$PRETTYPRINT = 1;
 $TEXTONLY = 0;
 
 while($ARGV[0] =~ m/\-\-/) {
