@@ -1,0 +1,124 @@
+ROOT -> S1 99
+S1 -> NP VP . 1
+VP -> VerbT NP 1
+NP -> Det Nbar 20
+NP -> Proper 1
+Nbar -> Noun 20
+Nbar -> Nbar PP 1
+PP -> Prep NP 1
+PP -> Prep NP 1
+S1 -> +Det 1
+S1 -> +Noun 30
+S1 -> +Prep 30
+S1 -> +Proper 30
+S1 -> +VerbT 1
+S1 -> +RB 30
+S1 -> +JJ 30
+S1 -> +IN 30
+S1 -> +PUNC 1
+S1 -> +PRP 1
+S1 -> +Num 1
+S1 -> +CC 1
++CC -> CC 30
++CC -> CC +Prep 1
++CC -> CC +Proper 1
++CC -> CC +Noun 30
++CC -> CC +Det 1
++CC -> CC +VerbT 30
++CC -> CC +PUNC 1
++Det -> Det 1
++Det -> Det +Det 1
++Det -> Det +Noun 30
++Det -> Det +Prep 1
++Det -> Det +Proper 30
++Det -> Det +VerbT 30
++Det -> Det +JJ 1
++Det -> Det +PUNC 1
++Noun -> Noun 30
++Noun -> Noun +Det 1
++Noun -> Noun +Noun 1
++Noun -> Noun +Prep 30
++Noun -> Noun +Proper 1
++Noun -> Noun +VerbT 1
++Noun -> Noun +CC 30
++Noun -> Noun +PRP 1
++Noun -> Noun +PUNC 1
++Prep -> Prep 30
++Prep -> Prep +Det 1
++Prep -> Prep +JJ 1
++Prep -> Prep +Noun 30
++Prep -> Prep +Num 1
++Prep -> Prep +Prep 1
++Prep -> Prep +Proper 30
++Prep -> Prep +VerbT 1
++Prep -> Prep +PRP 1
++Prep -> Prep +IN 1
++Prep -> Prep +PUNC 1
++Proper -> Proper 30
++Proper -> Proper +Det 1
++Proper -> Proper +Noun 1
++Proper -> Proper +Prep 1
++Proper -> Proper +Proper 1
++Proper -> Proper +VerbT 30
++Proper -> Proper +RB 30
++Proper -> Proper +CC 1
++Proper -> Proper +PUNC 1
++VerbT -> VerbT 30
++VerbT -> VerbT +Det 30
++VerbT -> VerbT +Noun 30
++VerbT -> VerbT +Prep 30
++VerbT -> VerbT +Proper 1
++VerbT -> VerbT +VerbT 1
++VerbT -> VerbT +PUNC 1
++VerbT -> VerbT +JJ 30
++VerbT -> VerbT +IN 1
++VerbT -> VerbT +PRP 1
++VerbT -> VerbT +RB 30
++VerbT -> VerbT +CC 30
++JJ -> JJ 30
++JJ -> JJ +Proper 1
++JJ -> JJ +Noun 30
++JJ -> JJ +RB 30
++JJ -> JJ +PUNC 1
++JJ -> JJ +PRP 1
++RB -> RB 30
++RB -> RB +VerbT 30
++RB -> RB +RB 1
++RB -> RB +Det 1
++RB -> RB +PRP 1
++RB -> RB +PUNC 1
++Num -> Num 30
++Num -> Num +Proper 1
++Num -> Num +Noun 1
++Num -> Num +PUNC 1
++PRP -> PRP 1
++PRP -> PRP +Proper 1
++PRP -> PRP +Det 1
++PRP -> PRP +PUNC 1
++PRP -> PRP +Noun 30
++PUNC -> PUNC 1
++PRP -> PRP 1
++PRP -> PRP +Noun 1
++PRP -> PRP +VerbT 1
++PRP -> PRP +JJ 1
++PRP -> PRP +CC 1
++PRP -> PRP +PUNC 1
++PUNC -> PUNC +VerbT 1
++PUNC -> PUNC +Det 1
++PUNC -> PUNC +Num 30
++PUNC -> PUNC +Proper 30
++PUNC -> PUNC +Noun 30
++IN -> IN 30
++IN -> IN +Noun 1
++IN -> IN +Det 1
++IN -> IN +VerbT 30
+
+
+
+
+
+
+
+
+
+
